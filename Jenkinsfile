@@ -1,24 +1,24 @@
 pipeline {
-    agent {label 'Devops_Agent'}
+    agent {label 'Devops-Agent'}
      environment {
                    key = credentials('openAI')
                 }
     stages {
         stage('Code fetch') {
             steps {
-                git url:'https://github.com/Bandank/chatgpt-web-application.git',branch:'master'
+                git url:'https://github.com/daipayanadhikari/chatgpt-web-application.git',branch:'master'
             }
         }
         stage('build and test') {
             steps {
-                sh 'sudo docker build . -t bandank/chatgpt-app:latest'
+                sh 'sudo docker build . -t daipayan/chatgpt-app:latest'
             }
         }
         stage('push') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-                sh 'docker push bandank/chatgpt-app:latest'
+                sh 'docker push daipayan/chatgpt-app:latest'
             }
           }
         }
